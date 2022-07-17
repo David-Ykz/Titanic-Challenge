@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
+    static double[] predictionWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     static HashSet<Passenger> passengers = new HashSet<>();
     public static void importPassengers() {
         CSVReader reader = new CSVReader();

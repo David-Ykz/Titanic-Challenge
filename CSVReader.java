@@ -11,13 +11,16 @@ public class CSVReader {
         while (inputMessage.contains(",")) {
             if (inputMessage.charAt(0) == '"') {
                 inputMessage = inputMessage.substring(1); // Removes the first "
-                outputMessage.add(inputMessage.substring(0, findLastQuotation(inputMessage)));
+                outputMessage.add(inputMessage.substring(0, inputMessage.indexOf('"')));
                 inputMessage = inputMessage.substring(inputMessage.indexOf('"') + 2); // Removes the last " and the comma
             } else {
-                outputMessage.add(inputMessage.substring(0, inputMessage.indexOf(',')));
+                String str = inputMessage.substring(0, inputMessage.indexOf(','));
+                if (str.equals("")) {
+                    str = "0";
+                }
+                outputMessage.add(str);
                 inputMessage = inputMessage.substring(inputMessage.indexOf(',') + 1);
             }
-            System.out.println(outputMessage.toString());
         }
         outputMessage.add(inputMessage);
         return outputMessage;
