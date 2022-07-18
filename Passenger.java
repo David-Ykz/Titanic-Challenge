@@ -20,7 +20,6 @@ public class Passenger {
         for (int i = 3; i < info.size(); i++) {
             if (info.get(i).equals("female") || info.get(i).equals("male")) {
                 start = i;
-                System.out.println(info.get(start));
             }
         }
         this.sex = info.get(start);

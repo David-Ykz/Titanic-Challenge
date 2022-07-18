@@ -1,15 +1,20 @@
 public class Generation {
-    private double[] predictionWeights = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    private double[] predictionWeights = {-0.1, 0.1, -0.1, 0.1, 0.1, 0.1};
+//    private double[] predictionWeights = {-64.99999999999845, 37.40000000000001, -76.99999999999777, 85.84999999999727, -186.85000000000824, -59.74999999999874};
     private int numSuccesses;
+    private double deviation;
     private final double WEIGHT_MODIFIER = 0.05;
+    private final double MUTATION_CHANCE = 1;
 
     public Generation() {
-        this.numSuccesses = calculateSurvivalDeviation();
+//        this.numSuccesses = calculateSurvivalDeviation();
+        this.deviation = calculateSurvivalDeviation();
     }
     public Generation(Generation oldGeneration) {
         this.predictionWeights = oldGeneration.getPredictionWeights();
         randomModifyWeights();
-        this.numSuccesses = calculateSurvivalDeviation();
+//        this.numSuccesses = calculateSurvivalDeviation();
+        this.deviation = calculateSurvivalDeviation();
     }
 
 
@@ -19,10 +24,14 @@ public class Generation {
         if (Math.random() > 0.5) {
             sign = -sign;
         }
-        predictionWeights[randIndex] += sign * WEIGHT_MODIFIER * predictionWeights[randIndex];
+        if (Math.random() > MUTATION_CHANCE) {
+            predictionWeights[randIndex] += sign * WEIGHT_MODIFIER * 10;
+        } else {
+            predictionWeights[randIndex] += sign * WEIGHT_MODIFIER;
+        }
     }
 
-    public int calculateSurvivalDeviation() {
+    public int successRate() {
         int successes = 0;
         for (Passenger p : Main.passengers) {
             if (p.calculateSurvival(predictionWeights) >= 0.5) {
@@ -37,11 +46,21 @@ public class Generation {
         }
         return successes;
     }
+    public double calculateSurvivalDeviation() {
+        double deviation = 0.0;
+        for (Passenger p : Main.passengers) {
+            deviation -= Math.abs(p.getSurvived() - p.calculateSurvival(predictionWeights));
+        }
+        return deviation;
+    }
 
     public int getNumSuccesses() {
         return numSuccesses;
     }
-    private double[] getPredictionWeights() {
+    public double getDeviation() {
+        return deviation;
+    }
+    public double[] getPredictionWeights() {
         return predictionWeights;
     }
 

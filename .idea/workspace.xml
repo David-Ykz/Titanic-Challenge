@@ -43,7 +43,7 @@
       <recent name="C:\Users\kzdav\Documents\GitHub\Titanic" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CSVReader">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="CSVReader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CSVReader" />
       <module name="Titanic" />
@@ -60,8 +60,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CSVReader" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.CSVReader" />
       </list>
     </recent_temporary>
   </component>

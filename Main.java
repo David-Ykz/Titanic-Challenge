@@ -1,13 +1,11 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class Main {
     static HashSet<Passenger> passengers = new HashSet<>();
     static ArrayList<Generation> generations = new ArrayList<>();
-    static final int CUTOFF = 5;
+    static final int CUTOFF = 3;
     static final int CAPACITY = 1000;
     static final double SUCCESS_PERCENTAGE = 0.8;
 
@@ -21,10 +19,11 @@ public class Main {
             input.nextLine();
             while (input.hasNext()) {
                 line = input.nextLine();
-                System.out.println(line);
-                System.out.println(reader.parseString(line));
+//                System.out.println(line);
+ //               System.out.println(reader.parseString(line));
                 passengers.add(new Passenger(reader.parseString(line)));
             }
+            input.close();
         } catch (Exception e) {
             System.out.println("Error Reading File");
             System.out.println(e);
@@ -34,20 +33,33 @@ public class Main {
 
     public static ArrayList<Generation> findTopGenerations() {
         Collections.sort(generations, new SortBySuccess());
-        return new ArrayList<>(generations.subList(0, CUTOFF - 1));
+        return new ArrayList<>(generations.subList(0, CUTOFF));
+    }
+
+    public static void populate() {
+        for (int i = 0; i < CAPACITY; i++) {
+            generations.add(new Generation());
+        }
     }
 
     public static void repopulate(ArrayList<Generation> newGeneration) {
         generations.clear();
+//        generations.addAll(newGeneration);
+//        for (int i = 0; i < CAPACITY - newGeneration.size(); i++) {
         for (int i = 0; i < CAPACITY; i++) {
             int randIndex = (int)(Math.random() * CUTOFF); // Picks a random generation
             generations.add(new Generation(newGeneration.get(randIndex)));
         }
     }
 
-    public static int bestSuccess() {
+    public static double bestSuccess() {
         Collections.sort(generations, new SortBySuccess());
-        return generations.get(0).getNumSuccesses();
+        return generations.get(0).getDeviation();
+    }
+
+    public static Generation bestGeneration() {
+        Collections.sort(generations, new SortBySuccess());
+        return generations.get(0);
     }
 
     public static void main(String[]args) {
@@ -55,13 +67,43 @@ public class Main {
         System.out.println(passengers.size());
         boolean properlyFit = false;
         int generationNum = 0;
-        while (!properlyFit || generationNum >= 1000) {
+        populate();
+
+        int[] genNumber = new int[10000];
+        double[] deviation = new double[10000];
+        double[][] weights = new double[10000][6];
+
+        while (!properlyFit && generationNum < 10000) {
+            repopulate(findTopGenerations());
             generationNum++;
-            System.out.println("Generation Number: " + generationNum + " --- Successes: " + bestSuccess());
+            genNumber[generationNum - 1] = generationNum;
+            deviation[generationNum - 1] = bestSuccess();
+            weights[generationNum - 1] = bestGeneration().getPredictionWeights();
+//            if (generationNum % 100 == 0) {
+//                System.out.println("Generation Number: " + generationNum + " --- Successes: " + bestSuccess() + " --- Weights: " + Arrays.toString(bestGeneration().getPredictionWeights()));
+//            }
             if (bestSuccess() > passengers.size() * SUCCESS_PERCENTAGE) {
                 properlyFit = true;
             }
-            repopulate(findTopGenerations());
+        }
+
+        try {
+            File outputFile = new File("geneticAlg.csv");
+            PrintWriter output = new PrintWriter(outputFile);
+            String line;
+            for (int i = 0; i < genNumber.length; i++) {
+                line = "";
+                line += genNumber[i] + ", ";
+                line += deviation[i];
+                for (int j = 0; j < 6; j++) {
+                    line += ", " + weights[i][j];
+                }
+                output.println(line);
+                output.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error Writing File");
+            System.out.println(e);
         }
 
 
