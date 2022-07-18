@@ -33,13 +33,17 @@ public class Passenger {
 
     public double calculateSurvival(double[] predictionWeights) {
         double survivalChance = 0.0;
-        survivalChance += passengerClass * predictionWeights[0];
+        survivalChance += (passengerClass - 2) * predictionWeights[0];
         if (sex.equals("female")) {
             survivalChance += 1 * predictionWeights[1];
         } else {
             survivalChance += 1 * predictionWeights[2];
         }
-        survivalChance += age * predictionWeights[3];
+        if (age < 18 || age > 40) {
+            survivalChance += age * predictionWeights[3];
+        } else {
+            survivalChance -= age * predictionWeights[3];
+        }
         survivalChance += numSiblings * predictionWeights[4];
         survivalChance += numParents * predictionWeights[5];
         return survivalChance;

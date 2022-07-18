@@ -5,7 +5,7 @@ import java.util.*;
 public class Main {
     static HashSet<Passenger> passengers = new HashSet<>();
     static ArrayList<Generation> generations = new ArrayList<>();
-    static final int CUTOFF = 3;
+    static final int CUTOFF = 1;
     static final int CAPACITY = 1000;
     static final double SUCCESS_PERCENTAGE = 0.8;
 
@@ -33,6 +33,7 @@ public class Main {
 
     public static ArrayList<Generation> findTopGenerations() {
         Collections.sort(generations, new SortBySuccess());
+        Collections.reverseOrder();
         return new ArrayList<>(generations.subList(0, CUTOFF));
     }
 
@@ -44,9 +45,9 @@ public class Main {
 
     public static void repopulate(ArrayList<Generation> newGeneration) {
         generations.clear();
-//        generations.addAll(newGeneration);
-//        for (int i = 0; i < CAPACITY - newGeneration.size(); i++) {
-        for (int i = 0; i < CAPACITY; i++) {
+        generations.addAll(newGeneration);
+        for (int i = 0; i < CAPACITY - newGeneration.size(); i++) {
+//        for (int i = 0; i < CAPACITY; i++) {
             int randIndex = (int)(Math.random() * CUTOFF); // Picks a random generation
             generations.add(new Generation(newGeneration.get(randIndex)));
         }
@@ -54,11 +55,13 @@ public class Main {
 
     public static double bestSuccess() {
         Collections.sort(generations, new SortBySuccess());
+        Collections.reverseOrder();
         return generations.get(0).getDeviation();
     }
 
     public static Generation bestGeneration() {
         Collections.sort(generations, new SortBySuccess());
+        Collections.reverseOrder();
         return generations.get(0);
     }
 
@@ -73,12 +76,15 @@ public class Main {
         double[] deviation = new double[10000];
         double[][] weights = new double[10000][6];
 
-        while (!properlyFit && generationNum < 10000) {
+        while (generationNum < 3000) {
             repopulate(findTopGenerations());
             generationNum++;
             genNumber[generationNum - 1] = generationNum;
             deviation[generationNum - 1] = bestSuccess();
-            weights[generationNum - 1] = bestGeneration().getPredictionWeights();
+            for (int i = 0; i < bestGeneration().getPredictionWeights().length; i++) {
+                weights[generationNum - 1][i] = bestGeneration().getPredictionWeights()[i];
+            }
+//            weights[generationNum - 1] = bestGeneration().getPredictionWeights();
 //            if (generationNum % 100 == 0) {
 //                System.out.println("Generation Number: " + generationNum + " --- Successes: " + bestSuccess() + " --- Weights: " + Arrays.toString(bestGeneration().getPredictionWeights()));
 //            }
@@ -87,11 +93,12 @@ public class Main {
             }
         }
 
+
         try {
             File outputFile = new File("geneticAlg.csv");
             PrintWriter output = new PrintWriter(outputFile);
             String line;
-            for (int i = 0; i < genNumber.length; i++) {
+            for (int i = 0; i < genNumber.length; i += 10) {
                 line = "";
                 line += genNumber[i] + ", ";
                 line += deviation[i];
@@ -99,8 +106,8 @@ public class Main {
                     line += ", " + weights[i][j];
                 }
                 output.println(line);
-                output.close();
             }
+            output.close();
         } catch (Exception e) {
             System.out.println("Error Writing File");
             System.out.println(e);

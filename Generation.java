@@ -4,7 +4,7 @@ public class Generation {
     private int numSuccesses;
     private double deviation;
     private final double WEIGHT_MODIFIER = 0.05;
-    private final double MUTATION_CHANCE = 1;
+    private final double MUTATION_CHANCE = 0.9;
 
     public Generation() {
 //        this.numSuccesses = calculateSurvivalDeviation();
@@ -49,7 +49,7 @@ public class Generation {
     public double calculateSurvivalDeviation() {
         double deviation = 0.0;
         for (Passenger p : Main.passengers) {
-            deviation -= Math.abs(p.getSurvived() - p.calculateSurvival(predictionWeights));
+            deviation += Math.abs(p.getSurvived() - p.calculateSurvival(predictionWeights));
         }
         return deviation;
     }
