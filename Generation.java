@@ -1,34 +1,47 @@
 public class Generation {
-    private double[] predictionWeights = {-0.1, 0.1, -0.1, 0.1, 0.1, 0.1};
-//    private double[] predictionWeights = {-64.99999999999845, 37.40000000000001, -76.99999999999777, 85.84999999999727, -186.85000000000824, -59.74999999999874};
+    // pClass, isFemale, child, elderly, numSiblings, numParents
+    private double[] predictionWeights = {0.25, 0.15, 0.2, 0, 0.025, 0.025};
+//    private double[] predictionWeights = {0.3, 0.12, 0.21, 0.07, 0.05, 0.07};
+//    private double[] predictionWeights = {0.2, 0.05, 0.2, 0.07, 0.04, 0.08};
     private int numSuccesses;
-    private double deviation;
-    private final double WEIGHT_MODIFIER = 0.05;
-    private final double MUTATION_CHANCE = 0.9;
+    private final double WEIGHT_MODIFIER = 0.001;
 
     public Generation() {
-//        this.numSuccesses = calculateSurvivalDeviation();
-        this.deviation = calculateSurvivalDeviation();
+        this.numSuccesses = successRate();
     }
-    public Generation(Generation oldGeneration) {
-        this.predictionWeights = oldGeneration.getPredictionWeights();
-        randomModifyWeights();
-//        this.numSuccesses = calculateSurvivalDeviation();
-        this.deviation = calculateSurvivalDeviation();
+    public Generation(Generation parentA, Generation parentB, int crossoverPoint) {
+        for (int i = 0; i < predictionWeights.length; i++) {
+            if (i >= crossoverPoint) {
+                predictionWeights[i] = parentB.predictionWeights[i];
+            } else {
+                predictionWeights[i] = parentA.predictionWeights[i];
+            }
+        }
+        this.numSuccesses = successRate();
     }
-
 
     public void randomModifyWeights() {
         int randIndex = (int)(predictionWeights.length * Math.random());
         int sign = 1;
-        if (Math.random() > 0.5) {
+        if (predictionWeights[randIndex] < WEIGHT_MODIFIER) {
+            sign = 1;
+        } else if (predictionWeights[randIndex] > 1) {
+            sign = -1;
+        } else if (Math.random() > 0.5) {
             sign = -sign;
         }
-        if (Math.random() > MUTATION_CHANCE) {
-            predictionWeights[randIndex] += sign * WEIGHT_MODIFIER * 10;
-        } else {
-            predictionWeights[randIndex] += sign * WEIGHT_MODIFIER;
+        predictionWeights[randIndex] += sign * WEIGHT_MODIFIER;
+    }
+    public void randomModifyWeights(int randIndex) {
+        int sign = 1;
+        if (predictionWeights[randIndex] < WEIGHT_MODIFIER) {
+            sign = 1;
+        } else if (predictionWeights[randIndex] > 1) {
+            sign = -1;
+        } else if (Math.random() > 0.5) {
+            sign = -sign;
         }
+        predictionWeights[randIndex] += sign * WEIGHT_MODIFIER;
     }
 
     public int successRate() {
@@ -46,19 +59,9 @@ public class Generation {
         }
         return successes;
     }
-    public double calculateSurvivalDeviation() {
-        double deviation = 0.0;
-        for (Passenger p : Main.passengers) {
-            deviation += Math.abs(p.getSurvived() - p.calculateSurvival(predictionWeights));
-        }
-        return deviation;
-    }
 
     public int getNumSuccesses() {
         return numSuccesses;
-    }
-    public double getDeviation() {
-        return deviation;
     }
     public double[] getPredictionWeights() {
         return predictionWeights;
