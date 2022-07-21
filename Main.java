@@ -9,7 +9,7 @@ public class Main {
     static final int CAPACITY = 5000;
     static final double SUCCESS_PERCENTAGE = 0.8;
     static final double MUTATION_CHANCE = 0.5;
-    static final int GENERATION_CAP = 2000000;
+    static final int GENERATION_CAP = 50000;
 
     public static void importPassengers() {
         CSVReader reader = new CSVReader();
@@ -104,7 +104,7 @@ public class Main {
                 weights[generationNum - 1][i] = bestGeneration().getPredictionWeights()[i];
             }
 //            weights[generationNum - 1] = bestGeneration().getPredictionWeights();
-            if (generationNum % 100000 == 0) {
+            if (generationNum % 1000 == 0) {
                 System.out.println("Generation Number: " + generationNum + " --- Successes: " + bestSuccess() + " --- Weights: " + Arrays.toString(bestGeneration().getPredictionWeights()));
             }
             if (bestSuccess() > passengers.size() * SUCCESS_PERCENTAGE) {

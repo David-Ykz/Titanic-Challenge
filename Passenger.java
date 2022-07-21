@@ -36,6 +36,11 @@ public class Passenger {
         survivalChance += (3 - passengerClass) * predictionWeights[0];
         if (sex.equals("female")) {
             survivalChance += 1 * predictionWeights[1];
+            if (passengerClass < 3 && numParents < 2 && fare < 30) {
+                return 0;
+            } else if (passengerClass == 3 && age < 10) {
+                return 0;
+            }
         }
         if (age < 18) {
             survivalChance += predictionWeights[2];
@@ -44,6 +49,9 @@ public class Passenger {
         }
         survivalChance += numSiblings * predictionWeights[4];
         survivalChance += numParents * predictionWeights[5];
+        if (fare > 50) {
+            survivalChance += predictionWeights[6];
+        }
 
         if (survivalChance > 1) {
             return 1;

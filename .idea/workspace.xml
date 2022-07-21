@@ -43,7 +43,7 @@
       <recent name="C:\Users\kzdav\Documents\GitHub\Titanic" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.OptimalWeight">
     <configuration name="CSVReader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CSVReader" />
       <module name="Titanic" />
@@ -58,8 +58,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OptimalWeight" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="OptimalWeight" />
+      <module name="Titanic" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.OptimalWeight" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.CSVReader" />
       </list>

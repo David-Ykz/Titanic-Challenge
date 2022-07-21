@@ -2,3 +2,4 @@
 .idea/workspace.xml
 out/production/Titanic/CSVReader.class
 out/production/Titanic/Passenger.class
+*.class
