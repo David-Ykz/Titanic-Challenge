@@ -5,6 +5,7 @@ public class NeuralNetwork {
     ArrayList<Layer> layers;
 
     NeuralNetwork(Layer inputLayer) {
+        layers = new ArrayList<Layer>();
         layers.add(inputLayer);
     }
 
@@ -23,6 +24,24 @@ public class NeuralNetwork {
         }
     }
 
+    public void computeResult() {
+        System.out.println("no");
+    }
+
+
+
+    public void printNetwork() {
+        int counter = 0;
+        for (Layer layer : layers) {
+            if (counter == 0) {
+                System.out.println("---------- Input Layer ----------");
+            } else {
+                System.out.println("---------- Hidden Layer " + Integer.toString(counter) + " ----------");
+            }
+            layer.printLayer();
+            counter++;
+        }
+    }
 
 
 }
