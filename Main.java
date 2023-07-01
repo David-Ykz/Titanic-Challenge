@@ -36,6 +36,8 @@ public class Main {
         network.addLayer(new Layer(2));
 
         network.printNetwork();
+        double[] output = network.computeResult(new double[]{3, 1, 34});
+        System.out.println(Arrays.toString(output));
     }
 
 

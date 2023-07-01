@@ -21,4 +21,9 @@ public class Layer {
         }
     }
 
+    public void calculateNodeValues(Layer prevLayer) {
+        for (Node node : nodes) {
+            node.calculateValue(prevLayer);
+        }
+    }
 }
