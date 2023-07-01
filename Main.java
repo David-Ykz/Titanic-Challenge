@@ -3,12 +3,12 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
-    static HashSet<Passenger> passengers = new HashSet<>();
+    static ArrayList<Passenger> passengers = new ArrayList<>();
 
     public static void importPassengers() {
         CSVReader reader = new CSVReader();
         try {
-            String fileName = "train.csv";
+            String fileName = "practice.csv";
             File file = new File(fileName);
             Scanner input = new Scanner(file);
             String line;
@@ -26,8 +26,10 @@ public class Main {
     }
 
     public static void main(String[]args) {
-//        importPassengers();
-  //      System.out.println(passengers.size());
+        importPassengers();
+        for (Passenger passenger : passengers) {
+            passenger.printInfo();
+        }
 
         Layer inputLayer = new Layer(3);
         NeuralNetwork network = new NeuralNetwork(inputLayer);

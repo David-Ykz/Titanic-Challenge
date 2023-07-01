@@ -5,7 +5,7 @@ public class NeuralNetwork {
     ArrayList<Layer> layers;
 
     NeuralNetwork(Layer inputLayer) {
-        layers = new ArrayList<Layer>();
+        layers = new ArrayList<>();
         layers.add(inputLayer);
     }
 

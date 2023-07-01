@@ -3,7 +3,7 @@ public class Layer {
     ArrayList<Node> nodes;
 
     Layer(int numNodes) {
-        nodes = new ArrayList<Node>();
+        nodes = new ArrayList<>();
         for (int i = 0; i < numNodes; i++) {
             nodes.add(new Node());
         }
