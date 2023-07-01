@@ -3,33 +3,44 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
-    static ArrayList<Passenger> passengers = new ArrayList<>();
 
-    public static void importPassengers() {
-        CSVReader reader = new CSVReader();
+
+    public static ArrayList<double[]> readPassengers() {
+        ArrayList<double[]> data = new ArrayList<>();
         try {
             String fileName = "practice.csv";
             File file = new File(fileName);
             Scanner input = new Scanner(file);
-            String line;
             input.nextLine();
             while (input.hasNext()) {
-                line = input.nextLine();
-                passengers.add(new Passenger(reader.parseString(line)));
+                String[] line = input.nextLine().split(",");
+                double survival = Double.parseDouble(line[1]);
+                double pClass = Double.parseDouble(line[2]);
+                double gender = 0.0; // Male
+                int start = -1;
+                for (int i = 3; i < line.length; i++) {
+                    if (line[i].contains("female")) {
+                        start = i;
+                        gender = 1.0; // Female
+                    } else if (line[i].contains("male")){
+                        start = i;
+                    }
+                }
+                double age = Double.parseDouble(line[start + 1]);
+                data.add(new double[]{pClass, gender, age, survival});
+                System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
             }
             input.close();
         } catch (Exception e) {
             System.out.println("Error Reading File");
             System.out.println(e);
         }
-
+        return data;
     }
 
+
     public static void main(String[]args) {
-        importPassengers();
-        for (Passenger passenger : passengers) {
-            passenger.printInfo();
-        }
+        ArrayList<double[]> passengers = readPassengers();
 
         Layer inputLayer = new Layer(3);
         NeuralNetwork network = new NeuralNetwork(inputLayer);
@@ -38,7 +49,7 @@ public class Main {
         network.addLayer(new Layer(2));
 
         network.printNetwork();
-        double[] output = network.computeResult(new double[]{3, 1, 34});
+        double[] output = network.computeTotalResult(passengers);
         System.out.println(Arrays.toString(output));
     }
 

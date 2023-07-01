@@ -23,7 +23,7 @@ public class NeuralNetwork {
         }
     }
 
-    public double[] computeResult(double[] inputData) {
+    public double[] computeIndividualResult(double[] inputData) {
         // Initialize values for the first layer
         Layer firstLayer = layers.get(0);
         for (int i = 0; i < firstLayer.numNodes(); i++) {
@@ -39,10 +39,25 @@ public class NeuralNetwork {
         for (int i = 0; i < outputLayer.numNodes(); i++) {
             output[i] = outputLayer.nodes.get(i).value;
         }
-
+        System.out.println(Arrays.toString(output));
         return output;
     }
 
+    public double[] computeTotalResult(ArrayList<double[]> data) {
+        Layer outputLayer = layers.get(layers.size() - 1);
+        double[] output = new double[outputLayer.numNodes()];
+        Arrays.fill(output, 0.0);
+        for (double[] inputData : data) {
+            addArrays(output, computeIndividualResult(inputData));
+        }
+        return output;
+    }
+
+    public void addArrays(double[] arr1, double[] arr2) {
+        for (int i = 0; i < arr1.length; i++) {
+            arr1[i] += arr2[i];
+        }
+    }
 
 
     public void printNetwork() {
