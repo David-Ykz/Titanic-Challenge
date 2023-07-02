@@ -8,7 +8,7 @@ public class Main {
     public static ArrayList<double[]> readPassengers() {
         ArrayList<double[]> data = new ArrayList<>();
         try {
-            String fileName = "practice.csv";
+            String fileName = "train.csv";
             File file = new File(fileName);
             Scanner input = new Scanner(file);
             input.nextLine();
@@ -31,11 +31,11 @@ public class Main {
                     }
                     double age = Double.parseDouble(line[start + 1]);
                     data.add(new double[]{pClass, gender, age, survival});
-                    System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
+//                    System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
 
                 } catch (Exception e) {
-                    System.out.println(e);
-                    System.out.println(lineNum);
+//                    System.out.println(e);
+ //                   System.out.println(lineNum);
                 }
             }
             input.close();
@@ -62,7 +62,8 @@ public class Main {
         System.out.println("");
         System.out.println("");
 
-        System.out.println(network.computeError(passengers));
+        network.trainNetwork(1000, 0.01, passengers);
+
 
     }
 

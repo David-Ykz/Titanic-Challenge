@@ -3,8 +3,11 @@ import java.util.Arrays;
 
 public class Node {
     double[] weights;
+    double[] weightGradient;
     double bias;
+    double biasGradient;
     double value;
+
 
     public void calculateValue(Layer prevLayer) {
         value = 0;
