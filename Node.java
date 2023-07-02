@@ -13,7 +13,8 @@ public class Node {
             value += prevNode.value * weights[i];
             i++;
         }
-        value = Math.max(0.0, value + bias); // Relu
+        value = 1/(1 + Math.exp(-value)); // Sigmoid activation function
+//        value = Math.max(0.0, value + bias); // Relu
     }
 
 

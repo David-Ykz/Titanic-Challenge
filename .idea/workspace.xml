@@ -5,7 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NeuralNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/NeuralNetwork.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Titanic/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Titanic/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/Node.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
