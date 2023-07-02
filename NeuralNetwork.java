@@ -75,7 +75,7 @@ public class NeuralNetwork {
     }
 
     public void learn(double learningRate, ArrayList<double[]> trainingData) {
-        double delta = 0.00001;
+        double delta = 0.001;
         double originalError = computeError(trainingData);
         for (int layerNum = 1; layerNum < layers.size(); layerNum++) {
             Layer layer = layers.get(layerNum);
@@ -102,9 +102,9 @@ public class NeuralNetwork {
             Layer layer = layers.get(layerNum);
             for (Node node : layer.nodes) {
                 for (int i = 0; i < node.weights.length; i++) {
-                    node.weights[i] = node.weights[i] + learningRate * node.weightGradient[i]; // SHOULD BE A NEGATIVE
+                    node.weights[i] = node.weights[i] - learningRate * node.weightGradient[i]; // SHOULD BE A NEGATIVE
                 }
-                node.bias += learningRate * node.biasGradient; // SHOULD BE A NEGATIVE
+                node.bias -= learningRate * node.biasGradient; // SHOULD BE A NEGATIVE
             }
         }
     }
@@ -142,12 +142,10 @@ public class NeuralNetwork {
     public void printNetwork() {
         int counter = 0;
         for (Layer layer : layers) {
-            if (counter == 0) {
-                System.out.println("---------- Input Layer ----------");
-            } else {
+            if (counter != 0) {
                 System.out.println("---------- Hidden Layer " + Integer.toString(counter) + " ----------");
+                layer.printLayer();
             }
-            layer.printLayer();
             counter++;
         }
     }
