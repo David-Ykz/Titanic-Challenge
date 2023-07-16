@@ -17,11 +17,10 @@ public class NeuralNetwork {
 
     public void initializeLayerConnection(Layer previous, Layer current) {
         for (Node node : current.nodes) {
-            node.weights = new double[previous.numNodes()];
+            node.weights = randomizedArray(previous.numNodes());
             node.weightGradient = new double[previous.numNodes()];
-            Arrays.fill(node.weights, 1.0);
-            Arrays.fill(node.weights, 0.0);
-            node.bias = 0.0;
+            Arrays.fill(node.weightGradient, 0.0);
+            node.bias = Math.random();
             node.biasGradient = 0.0;
         }
     }
@@ -66,7 +65,7 @@ public class NeuralNetwork {
             //
 
 
-            if (trainingCycle % (numIterations/10) == 0) {
+            if (trainingCycle % (100) == 0) {
                 System.out.println("Iteration " + Integer.toString(trainingCycle) + " -- Cost: " + Double.toString(computeError(trainingData)) + " -- Number of Correct: " + testNetwork(trainingData));
                 printNetwork();
                 System.out.println("");
@@ -82,9 +81,12 @@ public class NeuralNetwork {
             for (Node node : layer.nodes) {
                 for (int i = 0; i < node.weights.length; i++) {
                     node.weights[i] = node.weights[i] + delta;
-                    double deltaCost = originalError - computeError(trainingData);
+                    double deltaCost = computeError(trainingData) - originalError;
+                    if (deltaCost == 0) {
+                    }
                     node.weights[i] = node.weights[i] - delta;
                     node.weightGradient[i] = deltaCost/delta;
+//                    System.out.println(node.weightGradient[i]);
                 }
 
                 node.bias += delta;
@@ -109,21 +111,33 @@ public class NeuralNetwork {
         }
     }
 
-    public double testNetwork(ArrayList<double[]> trainingData) {
+    public int testNetwork(ArrayList<double[]> trainingData) {
         int numCorrect = 0;
+        int numIncorrect = 0;
         for (double[] inputData : trainingData) {
             double prediction = sum(computeIndividualOutput(inputData));
-            if (prediction > 0.5 && inputData[inputData.length - 1] == 1) {
+            if (prediction >= 0.5 && inputData[inputData.length - 1] == 1) {
                 numCorrect++;
             } else if (prediction < 0.5 && inputData[inputData.length - 1] == 0) {
                 numCorrect++;
+            } else {
+                numIncorrect++;
             }
         }
+        System.out.println(numIncorrect);
         return numCorrect;
     }
 
 
 
+
+    public double[] randomizedArray(int length) {
+        double[] arr = new double[length];
+        for (int i = 0; i < length; i++) {
+            arr[i] = Math.random();
+        }
+        return arr;
+    }
 
     public double square(double num) {
         return num * num;

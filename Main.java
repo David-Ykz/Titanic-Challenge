@@ -49,11 +49,12 @@ public class Main {
 
     public static void main(String[]args) {
         ArrayList<double[]> passengers = readPassengers();
+        System.out.println(passengers.size());
+
 
         Layer inputLayer = new Layer(3);
         NeuralNetwork network = new NeuralNetwork(inputLayer);
 
-//        network.addLayer(new Layer(4));
         network.addLayer(new Layer(1));
 
         network.printNetwork();
@@ -62,8 +63,9 @@ public class Main {
         System.out.println("");
         System.out.println("");
 
-        network.trainNetwork(100, 0.1, passengers);
+        network.trainNetwork(1000, 0.01, passengers);
 
+        System.out.println(network.sum(network.computeIndividualOutput(passengers.get(1))));
 
     }
 

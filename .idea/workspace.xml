@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33dbe3e0-c565-4eb9-bd99-f0d9651408e5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/LogisticRegression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NeuralNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/NeuralNetwork.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Titanic/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Titanic/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Titanic/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Titanic/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,9 +53,16 @@
       <recent name="C:\Users\kzdav\Documents\GitHub\Titanic" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.LogisticRegression">
     <configuration name="CSVReader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CSVReader" />
+      <module name="Titanic" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogisticRegression" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="LogisticRegression" />
       <module name="Titanic" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -75,6 +84,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LogisticRegression" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.OptimalWeight" />
         <item itemvalue="Application.CSVReader" />
