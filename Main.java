@@ -5,7 +5,7 @@ import java.util.*;
 public class Main {
 
 
-    public static void readPassengers(ArrayList<double[]> trainingData, ArrayList<Double> results) {
+    public static void readTrainFile(ArrayList<double[]> trainingData, ArrayList<Double> results) {
         try {
             String fileName = "train.csv";
             File file = new File(fileName);
@@ -44,12 +44,62 @@ public class Main {
             System.out.println(e);
         }
     }
+    public static void readTestFile(ArrayList<double[]> testData) {
+        try {
+            String fileName = "test.csv";
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+            input.nextLine();
+            int lineNum = 1;
+            while (input.hasNext()) {
+                lineNum++;
+                try {
+                    String[] line = input.nextLine().split(",");
+                    double pClass = Double.parseDouble(line[1]);
+                    double gender = 0.0; // Male
+                    int start = -1;
+                    for (int i = 3; i < line.length; i++) {
+                        if (line[i].contains("female")) {
+                            start = i;
+                            gender = 1.0; // Female
+                        } else if (line[i].contains("male")){
+                            start = i;
+                        }
+                    }
+                    double age = Double.parseDouble(line[start + 1]);
+                    testData.add(new double[]{pClass, gender, age});
+//                    System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
+
+                } catch (Exception e) {
+//                    System.out.println(e);
+                    //                   System.out.println(lineNum);
+                }
+            }
+            input.close();
+        } catch (Exception e) {
+            System.out.println("Error Reading File");
+            System.out.println(e);
+        }
+    }
+    public static void writePredictionFile(int[] predictions) {
+        try {
+            File outputFile = new File("Predictions.csv");
+            PrintWriter output = new PrintWriter(outputFile);
+            for (int i = 0; i < predictions.length; i++) {
+                output.println(Integer.toString(i + 1) + ", " + Integer.toString(predictions[i]));
+            }
+            output.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
 
 
     public static void main(String[]args) {
         ArrayList<double[]> passengers = new ArrayList<>();
         ArrayList<Double> survival = new ArrayList<>();
-        readPassengers(passengers, survival);
+        readTrainFile(passengers, survival);
         System.out.println(passengers.size());
 
         double[][] trainingData = new double[passengers.size()][];
@@ -71,19 +121,30 @@ public class Main {
             if (i % 5000 == 0) {
                 System.out.println("");
                 System.out.println(classifier.testPredictions(parameters, bias, trainingData, results));
-                System.out.println(Arrays.toString(parameters));
                 System.out.println(classifier.logarithmicLoss(parameters, bias, trainingData, results));
+                System.out.println(Arrays.toString(parameters));
                 System.out.println(bias);
-
             }
         }
 
 
 
+        passengers.clear();
+        readTestFile(passengers);
 
 
+        double[][] testData = new double[passengers.size()][];
+        for (int i = 0; i < passengers.size(); i++) {
+            testData[i] = passengers.get(i);
+        }
+
+        int[] predictions = new int[passengers.size()];
+        for (int i = 0; i < passengers.size(); i++) {
+            predictions[i] = (int) Math.round(classifier.prediction(parameters, bias, testData[i]));
+        }
 
 
+        writePredictionFile(predictions);
 
 
 //        Layer inputLayer = new Layer(3);
