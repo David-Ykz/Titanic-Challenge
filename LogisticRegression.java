@@ -15,7 +15,7 @@ public class LogisticRegression {
             Arrays.fill(parameters, fillValue);
         } else {
             for (int i = 0; i < num; i++) {
-                parameters[i] = Math.random();
+                parameters[i] = Math.random() + 0.01;
             }
         }
         return parameters;
