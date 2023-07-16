@@ -66,13 +66,18 @@ public class Main {
                             start = i;
                         }
                     }
-                    double age = Double.parseDouble(line[start + 1]);
+                    double age;
+                    if (line[start + 1].equals("")) {
+                        age = 30.27;
+                    } else {
+                        age = Double.parseDouble(line[start + 1]);
+                    }
                     testData.add(new double[]{pClass, gender, age});
 //                    System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
 
                 } catch (Exception e) {
-//                    System.out.println(e);
-                    //                   System.out.println(lineNum);
+                    System.out.println(e);
+                    System.out.println(lineNum);
                 }
             }
             input.close();
@@ -85,8 +90,9 @@ public class Main {
         try {
             File outputFile = new File("Predictions.csv");
             PrintWriter output = new PrintWriter(outputFile);
+            output.println("PassengerId,Survived");
             for (int i = 0; i < predictions.length; i++) {
-                output.println(Integer.toString(i + 1) + ", " + Integer.toString(predictions[i]));
+                output.println(Integer.toString(i + 892) + "," + Integer.toString(predictions[i]));
             }
             output.close();
         } catch (Exception e) {
@@ -97,7 +103,10 @@ public class Main {
 
 
     public static void main(String[]args) {
+
         ArrayList<double[]> passengers = new ArrayList<>();
+
+
         ArrayList<Double> survival = new ArrayList<>();
         readTrainFile(passengers, survival);
         System.out.println(passengers.size());
@@ -116,7 +125,7 @@ public class Main {
         System.out.println(Arrays.toString(parameters));
         System.out.println(classifier.logarithmicLoss(parameters, bias, trainingData, results));
         System.out.println(bias);
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 10000; i++) {
             bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.01);
             if (i % 5000 == 0) {
                 System.out.println("");
@@ -131,6 +140,7 @@ public class Main {
 
         passengers.clear();
         readTestFile(passengers);
+        System.out.println(passengers.size());
 
 
         double[][] testData = new double[passengers.size()][];
