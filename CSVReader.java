@@ -1,34 +1,51 @@
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class CSVReader {
-    public static int findLastQuotation(String message) {
-        int firstComma = message.indexOf(",");
-        int nextComma = message.substring(firstComma + 1).indexOf(",");
-        return nextComma - 1;
-    }
-    public static ArrayList<String> parseString(String inputMessage) {
-        ArrayList<String> outputMessage = new ArrayList<>();
-        while (inputMessage.contains(",")) {
-            if (inputMessage.charAt(0) == '"') {
-                inputMessage = inputMessage.substring(1); // Removes the first "
-                outputMessage.add(inputMessage.substring(0, inputMessage.indexOf('"')));
-                inputMessage = inputMessage.substring(inputMessage.indexOf('"') + 2); // Removes the last " and the comma
-            } else {
-                String str = inputMessage.substring(0, inputMessage.indexOf(','));
-                if (str.equals("")) {
-                    str = "0";
-                }
-                outputMessage.add(str);
-                inputMessage = inputMessage.substring(inputMessage.indexOf(',') + 1);
+    public static double[][] readFeatures(String fileName) {
+        ArrayList<double[]> data = new ArrayList<>();
+        try {
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+            input.nextLine();
+            while (input.hasNext()) {
+                String[] line = input.nextLine().split(",");
+                double pClass = Double.parseDouble(line[1]);
+                double gender = Double.parseDouble(line[2]);
+                double age = Double.parseDouble(line[3]);
+                data.add(new double[] {pClass, gender, age});
             }
+            input.close();
+        } catch (Exception e) {
+            System.out.println("Error Reading File");
+            System.out.println(e);
         }
-        outputMessage.add(inputMessage);
-        return outputMessage;
+        double[][] arr = new double[data.size()][];
+        for (int i = 0; i < data.size(); i++) {
+            arr[i] = data.get(i);
+        }
+        return arr;
     }
 
-
-    public static void main(String[]args) {
-        System.out.println(findLastQuotation("\"Ford, Miss. Robina Maggie \"\"Ruby\"\"\","));
-        parseString("148,0,3,\"Ford, Miss. Robina Maggie \"\"Ruby\"\"\",female,9,2,2,W./C. 6608,34.375,,S");
+    public static double[] readResults(String fileName, int numResults) {
+        double[] arr = new double[numResults];
+        try {
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+            input.nextLine();
+            while (input.hasNext()) {
+                String[] line = input.nextLine().split(",");
+                int id = Integer.parseInt(line[0]);
+                double survived = Double.parseDouble(line[1]);
+                arr[id - 1] = survived;
+            }
+            input.close();
+        } catch (Exception e) {
+            System.out.println("Error Reading File");
+            System.out.println(e);
+        }
+        return arr;
     }
+
 }

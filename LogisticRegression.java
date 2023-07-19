@@ -22,7 +22,16 @@ public class LogisticRegression {
     }
 
     public double sigmoid(double num) {
-        return 1 / (1 + Math.exp(-num));
+        double result = 1 / (1 + Math.exp(-num));
+//        System.out.println("dskjsdhkfjsdfh" + num);
+ //       System.out.println("cvhjxcgvjhgdsf" + result);
+        if (Double.isNaN(result)) {
+            System.out.println("dskjsdhkfjsdfh" + num);
+        }
+        if (result == 1.0) {
+            result -= 0.01;
+        }
+        return result;
     }
 
     public double prediction(double[] weights, double bias, double[] data) {
@@ -34,7 +43,13 @@ public class LogisticRegression {
     }
 
     public double logarithmicError(double y, double yHat) {
-        return y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
+        double result = y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
+        if (Double.isNaN(result)) {
+            System.out.println("Y: " + Double.toString(y));
+            System.out.println("yHat: " + Double.toString(yHat));
+            System.out.println(1/0);
+        }
+        return result;
     }
 
     public double logarithmicLoss(double[] weights, double bias, double[][] dataSet, double[] results) {
@@ -77,6 +92,8 @@ public class LogisticRegression {
             double[] data = dataSet[i];
             if (Math.abs(results[i] - prediction(weights, bias, data)) < 0.5) {
                 numCorrect++;
+            } else {
+                System.out.println(Arrays.toString(data) + " -- Prediction: " + Double.toString(prediction(weights, bias, data)));
             }
         }
         return numCorrect;

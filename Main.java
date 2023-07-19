@@ -14,7 +14,6 @@ public class Main {
             int lineNum = 1;
             while (input.hasNext()) {
                 lineNum++;
-                try {
                     String[] line = input.nextLine().split(",");
                     double survival = Double.parseDouble(line[1]);
                     double pClass = Double.parseDouble(line[2]);
@@ -28,15 +27,16 @@ public class Main {
                             start = i;
                         }
                     }
-                    double age = Double.parseDouble(line[start + 1]);
+                    double age;
+                    if (line[start + 1].equals("")) {
+                        age = 29.70;
+                    } else {
+                        age = Double.parseDouble(line[start + 1]);
+                    }
                     trainingData.add(new double[]{pClass, gender, age});
                     results.add(survival);
 //                    System.out.println("Class: " + Double.toString(pClass) + " -- Gender: " + Double.toString(gender) + " -- Age: " + Double.toString(age) + " -- Survival: " + Double.toString(survival));
 
-                } catch (Exception e) {
-//                    System.out.println(e);
- //                   System.out.println(lineNum);
-                }
             }
             input.close();
         } catch (Exception e) {
@@ -97,6 +97,7 @@ public class Main {
             output.close();
         } catch (Exception e) {
             System.out.println(e);
+            System.out.println("dofjkghdfkjgdfhg");
         }
 
     }
@@ -119,7 +120,7 @@ public class Main {
         }
 
         LogisticRegression classifier = new LogisticRegression();
-        double[] parameters = classifier.initializeParameters(trainingData[0].length, -1);
+        double[] parameters = classifier.initializeParameters(trainingData[0].length, 0);
         double bias = 3.0;
         System.out.println(classifier.testPredictions(parameters, bias, trainingData, results));
         System.out.println(Arrays.toString(parameters));
@@ -127,14 +128,20 @@ public class Main {
         System.out.println(bias);
         for (int i = 0; i < 10000; i++) {
             bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.01);
-            if (i % 5000 == 0) {
+            if (i % 1 == 1) {
                 System.out.println("");
                 System.out.println(classifier.testPredictions(parameters, bias, trainingData, results));
-                System.out.println(classifier.logarithmicLoss(parameters, bias, trainingData, results));
                 System.out.println(Arrays.toString(parameters));
                 System.out.println(bias);
             }
         }
+
+
+        System.out.println("--------------------");
+        System.out.println(classifier.testPredictions(parameters, bias, trainingData, results));
+        System.out.println("--------------------");
+        System.out.println(Arrays.toString(parameters));
+        System.out.println(bias);
 
 
 
@@ -148,13 +155,18 @@ public class Main {
             testData[i] = passengers.get(i);
         }
 
+
+
+
+
         int[] predictions = new int[passengers.size()];
         for (int i = 0; i < passengers.size(); i++) {
             predictions[i] = (int) Math.round(classifier.prediction(parameters, bias, testData[i]));
         }
 
 
-        writePredictionFile(predictions);
+
+//        writePredictionFile(predictions);
 
 
 //        Layer inputLayer = new Layer(3);
