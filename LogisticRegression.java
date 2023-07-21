@@ -29,7 +29,7 @@ public class LogisticRegression {
             System.out.println("dskjsdhkfjsdfh" + num);
         }
         if (result == 1.0) {
-            result -= 0.01;
+            result -= 0.00;
         }
         return result;
     }

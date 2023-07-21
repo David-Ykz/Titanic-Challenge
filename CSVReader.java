@@ -14,7 +14,11 @@ public class CSVReader {
                 double pClass = Double.parseDouble(line[1]);
                 double gender = Double.parseDouble(line[2]);
                 double age = Double.parseDouble(line[3]);
-                data.add(new double[] {pClass, gender, age});
+                double sibsp = Double.parseDouble(line[4]);
+                double parch = Double.parseDouble(line[5]);
+                double fare = Double.parseDouble(line[6]);
+                double embarked = Double.parseDouble(line[7]);
+                data.add(new double[] {pClass, gender, age, sibsp, parch, fare, embarked});
             }
             input.close();
         } catch (Exception e) {
