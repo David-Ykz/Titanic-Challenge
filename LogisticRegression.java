@@ -1,6 +1,23 @@
 import java.util.Arrays;
 
 public class LogisticRegression {
+    public double[] weights;
+    public double bias;
+    public double[] weightGradients;
+    public double biasGradient;
+    public double[] prevGradients;
+    public double[][] dataSet;
+    public int[] results;
+
+    LogisticRegression(double[][] trainingData, int[] results) {
+        this.dataSet = trainingData;
+        this.results = results;
+        weights = initializeParameters(trainingData[0].length, 0);
+        bias = 0;
+        weightGradients = initializeParameters(trainingData[0].length, 0);
+        prevGradients = initializeParameters(trainingData[0].length, 0);
+    }
+
     public static double dotProduct(double[] arr1, double[] arr2) {
         double result = 0;
         for (int i = 0; i < arr1.length; i++) {
@@ -8,8 +25,7 @@ public class LogisticRegression {
         }
         return result;
     }
-
-    public double[] initializeParameters(int num, double fillValue) {
+    public static double[] initializeParameters(int num, double fillValue) {
         double[] parameters = new double[num];
         if (fillValue >= 0) {
             Arrays.fill(parameters, fillValue);
@@ -20,89 +36,73 @@ public class LogisticRegression {
         }
         return parameters;
     }
-
-    public double sigmoid(double num) {
+    public static double sigmoid(double num) {
         double result = 1 / (1 + Math.exp(-num));
         if (result == 1.0) {
             result -= 0.00;
         }
         return result;
     }
+    public static double logarithmicError(double y, double yHat) {
+        return y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
+    }
 
-    public double prediction(double[] weights, double bias, double[] data) {
+    public double prediction(double[] data) {
         return sigmoid(dotProduct(weights, data) + bias);
     }
 
-    public double meanSquaredError(double y, double yHat) {
-        return (y - yHat) * (y - yHat);
-    }
-
-    public double logarithmicError(double y, double yHat) {
-        double result = y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
-        return result;
-    }
-
-    public double logarithmicLoss(double[] weights, double bias, double[][] dataSet, int[] results) {
+    public double logarithmicLoss() {
         double sum = 0;
         for (int i = 0; i < dataSet.length; i++) {
             double[] data = dataSet[i];
-            double yHat = prediction(weights, bias, data);
-//            System.out.println("Prediction " + Double.toString(yHat));
+            double yHat = prediction(data);
             double y = results[i];
             sum += logarithmicError(y, yHat);
         }
         return -1 / (double)dataSet.length * sum;
     }
 
-    public double learn(double[] weights, double bias, double[][] dataSet, int[] results, double delta, double learningRate) {
-        double[] weightGradients = new double[weights.length];
-        double biasGradient;
 
+    public double learn(double delta, double learningRate, double momentum) {
         for (int j = 0; j < weights.length; j++) {
             double sum = 0;
             for (int i = 0; i < dataSet.length; i++) {
-                sum += dataSet[i][j] * (results[i] - prediction(weights, bias, dataSet[i]));
+                sum += dataSet[i][j] * (results[i] - prediction(dataSet[i]));
             }
             weightGradients[j] = 1.0/dataSet.length * sum;
         }
-
-//        for (int i = 0; i < weights.length; i++) {
-//            double currentError = logarithmicLoss(weights, bias, dataSet, results);
-//            weights[i] += delta;
-//            double deltaError = currentError - logarithmicLoss(weights, bias, dataSet, results);
-//            weights[i] -= delta;
-//            double slope = deltaError/delta;
-//            weightGradients[i] = slope;
-//        }
-
-
-
-        double deltaError = logarithmicLoss(weights, bias, dataSet, results) - logarithmicLoss(weights, bias + delta, dataSet, results);
-        double slope = deltaError/delta;
-        biasGradient = slope;
+        double sum = 0;
+        for (int i = 0; i < dataSet.length; i++) {
+            int y = results[i];
+            double yHat = prediction(dataSet[i]);
+            sum += (-(y/yHat) + (1-y)/(1-yHat)) * yHat * (1 - yHat);
+        }
+        biasGradient = -1.0/ dataSet.length * sum;
+//        biasGradient = 0;
 
         for (int i = 0; i < weights.length; i++) {
-            weights[i] += learningRate * weightGradients[i];
+            prevGradients[i] = momentum * prevGradients[i] + weightGradients[i];
+            weights[i] += learningRate * prevGradients[i];
         }
         bias += learningRate * biasGradient;
         return bias;
     }
 
-    public int testPredictions(double[] weights, double bias, double[][] dataSet, int[] results) {
+    public int testPredictions(double[][] testingData, int[] outputs) {
         int numCorrect = 0;
-        for (int i = 0; i < dataSet.length; i++) {
-            double[] data = dataSet[i];
-            if (Math.abs(results[i] - prediction(weights, bias, data)) < 0.5) {
+        for (int i = 0; i < testingData.length; i++) {
+            double[] data = testingData[i];
+            if (Math.abs(outputs[i] - prediction(data)) < 0.5) {
                 numCorrect++;
             }
         }
         return numCorrect;
     }
 
-    public double[] allPredictions(double[] weights, double bias, double[][] dataSet) {
-        double[] predictions = new double[dataSet.length];
-        for (int i = 0; i < dataSet.length; i++) {
-            predictions[i] = prediction(weights, bias, dataSet[i]);
+    public double[] allPredictions(double[][] testinData) {
+        double[] predictions = new double[testinData.length];
+        for (int i = 0; i < testinData.length; i++) {
+            predictions[i] = prediction(testinData[i]);
         }
         return predictions;
     }

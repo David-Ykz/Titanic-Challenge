@@ -34,12 +34,6 @@ public class Main {
         double[][] trainingData = CSVReader.readFeatures("ScaledTrainingSet.csv");
         int[] results = CSVReader.readResults("ResultsSet.csv", trainingData.length);
 
-        // Initiate model
-        LogisticRegression classifier = new LogisticRegression();
-        double[] parameters = classifier.initializeParameters(trainingData[0].length, 0);
-        double bias = 0.0;
-
-
         boolean trainingMode = true;
 
         if (trainingMode) {
@@ -50,30 +44,30 @@ public class Main {
             double[][] test = splitData(trainingData, -testingSize);
             int[] trainResult = splitResults(results, trainingSize);
             int[] testResult = splitResults(results, -testingSize);
+            LogisticRegression classifier = new LogisticRegression(train, trainResult);
             // Train model
             for (int i = 0; i < 30000; i++) {
-                bias = classifier.learn(parameters, bias, train, trainResult, 0.001, 0.001);
+                classifier.learn(0.001, 0.01, 0.7);
                 if (i % 1000 == 0) {
-                    System.out.println("Train Accuracy: " + classifier.testPredictions(parameters, bias, train, trainResult) / (double)trainingSize);
-                    System.out.println("Test Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
+                    System.out.println("Train Accuracy: " + classifier.testPredictions(train, trainResult) / (double)trainingSize);
+                //    System.out.println("Test Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
                 }
             }
             // Print output
-            System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
-            System.out.println(Arrays.toString(parameters));
-            System.out.println(bias);
+            System.out.println("Accuracy: " + classifier.testPredictions(test, testResult) / (double)testingSize);
         } else {
-            for (int i = 0; i < 20000; i++) {
-                if (i % 1000 == 0) {
-                    System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, trainingData, results) / (double)trainingData.length);
+            LogisticRegression classifier = new LogisticRegression(trainingData, results);
+            for (int i = 0; i < 100000; i++) {
+                if (i % 5000 == 0) {
+                    System.out.println("Accuracy: " + classifier.testPredictions(trainingData, results) / (double)trainingData.length);
                 }
-                bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.0001);
+//                bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.001);
             }
-            System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, trainingData, results) / (double)trainingData.length);
+            System.out.println("Accuracy: " + classifier.testPredictions(trainingData, results) / (double)trainingData.length);
             double[][] testData = CSVReader.readFeatures("ScaledTestingSet.csv");
             int[] testDataPredictions = new int[testData.length];
             for (int i = 0; i < testData.length; i++) {
-                testDataPredictions[i] = (int) Math.round(classifier.prediction(parameters, bias, testData[i]));
+                testDataPredictions[i] = (int) Math.round(classifier.prediction(testData[i]));
             }
             CSVWriter.writeFile("Predictions.csv", testDataPredictions);
         }
