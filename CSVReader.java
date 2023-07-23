@@ -32,8 +32,8 @@ public class CSVReader {
         return arr;
     }
 
-    public static double[] readResults(String fileName, int numResults) {
-        double[] arr = new double[numResults];
+    public static int[] readResults(String fileName, int numResults) {
+        int[] arr = new int[numResults];
         try {
             File file = new File(fileName);
             Scanner input = new Scanner(file);
@@ -41,7 +41,7 @@ public class CSVReader {
             while (input.hasNext()) {
                 String[] line = input.nextLine().split(",");
                 int id = Integer.parseInt(line[0]);
-                double survived = Double.parseDouble(line[1]);
+                int survived = Integer.parseInt(line[1]);
                 arr[id - 1] = survived;
             }
             input.close();
