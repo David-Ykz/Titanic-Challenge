@@ -13,7 +13,24 @@ public class Main {
         return numCorrect;
     }
 
+    public static double[] splitData(double[] data, int index) {
+        if (index > 0) {
+            return Arrays.copyOfRange(data, 0, index);
+        } else {
+            return Arrays.copyOfRange(data, data.length + index, data.length);
+        }
+    }
+
     public static void main(String[]args) {
+        double[] example = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        double[] train = splitData(example, 10);
+        double[] test = splitData(example, -5);
+        System.out.println(Arrays.toString(train));
+        System.out.println(Arrays.toString(test));
+        System.out.println(1/0);
+
+
+
         CSVReader reader = new CSVReader();
         double[][] trainingData = reader.readFeatures("ScaledTrainingSet.csv");
         int[] results = reader.readResults("ResultsSet.csv", trainingData.length);
@@ -31,26 +48,6 @@ public class Main {
         System.out.println(bias);
 
         double[] predictions = classifier.allPredictions(parameters, bias, trainingData);
-        for (int i = 0; i < predictions.length; i++) {
-            double prediction = predictions[i];
-            double[] passenger = trainingData[i];
-            int survival = results[i];
-
-            if (passenger[0] == 1) { // First class
-                if (passenger[1] == 1) { // Female
-                    predictions[i] = 1;
-                }
-            } else if (passenger[0] == 2) { // Second class
-                if (passenger[1] == 0) { // Male
-                    if (passenger[2] < 15) {
-                        predictions[i] = 1;
-                    } else {
-                        predictions[i] = 0;
-                    }
-                }
-            }
-        }
-        System.out.println("skjfshdkfjsdhfjksdhkfjsdhfk");
         System.out.println(numberCorrect(predictions, results));
 
 
