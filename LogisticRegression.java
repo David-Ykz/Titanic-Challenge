@@ -57,14 +57,6 @@ public class LogisticRegression {
     public double learn(double[] weights, double bias, double[][] dataSet, int[] results, double delta, double learningRate) {
         double[] weightGradients = new double[weights.length];
         double biasGradient;
-//        for (int i = 0; i < weights.length; i++) {
-//            double currentError = logarithmicLoss(weights, bias, dataSet, results);
-//            weights[i] += delta;
-//            double deltaError = currentError - logarithmicLoss(weights, bias, dataSet, results);
-//            weights[i] -= delta;
-//            double slope = deltaError/delta;
-//            weightGradients[i] = slope;
-//        }
 
         for (int j = 0; j < weights.length; j++) {
             double sum = 0;
@@ -74,6 +66,14 @@ public class LogisticRegression {
             weightGradients[j] = 1.0/dataSet.length * sum;
         }
 
+//        for (int i = 0; i < weights.length; i++) {
+//            double currentError = logarithmicLoss(weights, bias, dataSet, results);
+//            weights[i] += delta;
+//            double deltaError = currentError - logarithmicLoss(weights, bias, dataSet, results);
+//            weights[i] -= delta;
+//            double slope = deltaError/delta;
+//            weightGradients[i] = slope;
+//        }
 
 
 

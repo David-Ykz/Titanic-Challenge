@@ -53,15 +53,23 @@ public class Main {
             // Train model
             for (int i = 0; i < 30000; i++) {
                 bias = classifier.learn(parameters, bias, train, trainResult, 0.001, 0.001);
+                if (i % 1000 == 0) {
+                    System.out.println("Train Accuracy: " + classifier.testPredictions(parameters, bias, train, trainResult) / (double)trainingSize);
+                    System.out.println("Test Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
+                }
             }
             // Print output
             System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
             System.out.println(Arrays.toString(parameters));
             System.out.println(bias);
         } else {
-            for (int i = 0; i < 30000; i++) {
-                bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.001);
+            for (int i = 0; i < 20000; i++) {
+                if (i % 1000 == 0) {
+                    System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, trainingData, results) / (double)trainingData.length);
+                }
+                bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.0001);
             }
+            System.out.println("Accuracy: " + classifier.testPredictions(parameters, bias, trainingData, results) / (double)trainingData.length);
             double[][] testData = CSVReader.readFeatures("ScaledTestingSet.csv");
             int[] testDataPredictions = new int[testData.length];
             for (int i = 0; i < testData.length; i++) {
