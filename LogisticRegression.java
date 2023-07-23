@@ -23,11 +23,6 @@ public class LogisticRegression {
 
     public double sigmoid(double num) {
         double result = 1 / (1 + Math.exp(-num));
-//        System.out.println("dskjsdhkfjsdfh" + num);
- //       System.out.println("cvhjxcgvjhgdsf" + result);
-        if (Double.isNaN(result)) {
-            System.out.println("dskjsdhkfjsdfh" + num);
-        }
         if (result == 1.0) {
             result -= 0.00;
         }
@@ -44,10 +39,6 @@ public class LogisticRegression {
 
     public double logarithmicError(double y, double yHat) {
         double result = y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
-        if (Double.isNaN(result)) {
-            System.out.println("Y: " + Double.toString(y));
-            System.out.println("yHat: " + Double.toString(yHat));
-        }
         return result;
     }
 
@@ -66,14 +57,26 @@ public class LogisticRegression {
     public double learn(double[] weights, double bias, double[][] dataSet, int[] results, double delta, double learningRate) {
         double[] weightGradients = new double[weights.length];
         double biasGradient;
-        for (int i = 0; i < weights.length; i++) {
-            double currentError = logarithmicLoss(weights, bias, dataSet, results);
-            weights[i] += delta;
-            double deltaError = currentError - logarithmicLoss(weights, bias, dataSet, results);
-            weights[i] -= delta;
-            double slope = deltaError/delta;
-            weightGradients[i] = slope;
+//        for (int i = 0; i < weights.length; i++) {
+//            double currentError = logarithmicLoss(weights, bias, dataSet, results);
+//            weights[i] += delta;
+//            double deltaError = currentError - logarithmicLoss(weights, bias, dataSet, results);
+//            weights[i] -= delta;
+//            double slope = deltaError/delta;
+//            weightGradients[i] = slope;
+//        }
+
+        for (int j = 0; j < weights.length; j++) {
+            double sum = 0;
+            for (int i = 0; i < dataSet.length; i++) {
+                sum += dataSet[i][j] * (results[i] - prediction(weights, bias, dataSet[i]));
+            }
+            weightGradients[j] = 1.0/dataSet.length * sum;
         }
+
+
+
+
         double deltaError = logarithmicLoss(weights, bias, dataSet, results) - logarithmicLoss(weights, bias + delta, dataSet, results);
         double slope = deltaError/delta;
         biasGradient = slope;
@@ -91,8 +94,6 @@ public class LogisticRegression {
             double[] data = dataSet[i];
             if (Math.abs(results[i] - prediction(weights, bias, data)) < 0.5) {
                 numCorrect++;
-            } else {
-                System.out.println(Arrays.toString(data) + " -- Prediction: " + Double.toString(prediction(weights, bias, data)));
             }
         }
         return numCorrect;
