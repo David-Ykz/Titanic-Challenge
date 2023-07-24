@@ -20,7 +20,7 @@ The Titanic Competition is a competition hosted by Kaggle, where participants ar
 
 ### Data Cleaning And Processing
 
-Both training and testing data come in 2 separate .csv files, with each column describing a characteristic (ex. age). Shown below is an excerpt of the training data. Note that for the _Survived _column, a 0 indicates the person did not survive, and a 1 indicates they did survive. 
+Both training and testing data come in 2 separate .csv files, with each column describing a characteristic (ex. age). Shown below is an excerpt of the training data. Note that for the _Survived_ column, a 0 indicates the person did not survive, and a 1 indicates they did survive. 
 
 ![image](https://github.com/David-Ykz/Titanic-Challenge/assets/59211419/f719cbee-af09-4b7d-b751-ebeb97682682)
 
@@ -30,7 +30,7 @@ Secondly, columns with text were converted into their numerical equivalent; _Gen
 
 Thirdly, any missing data (mostly in _Age_) was filled in with the mean of the already existing data. Both training and testing data had their own individual mean used to fill any missing data. 
 
-Finally, the data was normalized with the formula $$\frac{x-\mu}{\sigma}$$ Where $x$ is a data point, $/mu$ is the mean of the column, and $/sigma$ is the standard deviation of the column. This ensures that the data is relatively close to 0, preventing a single parameter from dominating the model. 
+Finally, the data was normalized with the formula $$\frac{x-\mu}{\sigma}$$ Where $x$ is a data point, $\mu$ is the mean of the column, and $\sigma$ is the standard deviation of the column. This ensures that the data is relatively close to 0, preventing a single parameter from dominating the model. 
 
 These steps were implemented in [Python](https://github.com/David-Ykz/Titanic-Python-Libraries) using dataframe (pandas library). Once the data was processed and cleaned, it was written to another .csv file to be used.
 
@@ -54,9 +54,9 @@ The model requires 3 main components to work
 
 To predict a person’s survival (known as $\hat{y}$), the model first needs to identify the importance of each feature. For example, a person’s gender may be much more significant than their fare price, and thus will subsequently be weighted higher. As the model is a regression, the formula for $\hat{y}$ is given by $wx+b$, where:
 
-$w$ represents the weights - an array where each value represents the importance of each feature
-$x$ represents an input value (in this case a passenger) - an array where each value represents a unique feature (ex. age, gender, passenger class)
-$b$ represents the bias - a value that is similar to a y-intercept
+$w$ represents the weights - an array where each value represents the importance of each feature  
+$x$ represents an input value (in this case a passenger) - an array where each value represents a unique feature (ex. age, gender, passenger class)  
+$b$ represents the bias - a value that is similar to a y-intercept  
 
 Since both $w$ and $x$ are arrays with the same size, their multiplication is simply the dot product of the two: $[w_{1}, w_{2},w_{3}]\cdot[x_{1}, x_{2},x_{3}]=w_{1}x_{1}+w_{2}x_{2}+w_{3}x_{3}$
 
