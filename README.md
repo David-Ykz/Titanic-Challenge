@@ -1,4 +1,4 @@
-# Titanic Competition
+# Titanic Competition - Predicting Disaster Using Logistic Regression
 
 
 ### Table of Contents:
