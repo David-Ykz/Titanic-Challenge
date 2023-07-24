@@ -22,7 +22,7 @@ The Titanic Competition is a competition hosted by Kaggle, where participants ar
 
 Both training and testing data come in 2 separate .csv files, with each column describing a characteristic (ex. age). Shown below is an excerpt of the training data. Note that for the _Survived _column, a 0 indicates the person did not survive, and a 1 indicates they did survive. 
 
-![image](https://github.com/David-Ykz/OLDTitanic/assets/59211419/fa297a36-7e9e-4c5f-b684-f4749234a127)
+![image](https://github.com/David-Ykz/Titanic-Challenge/assets/59211419/f719cbee-af09-4b7d-b751-ebeb97682682)
 
 The first step in processing this data is to remove unnecessary columns. _Name_, _Ticket_, and _Cabin_ were all removed as they were unrelated to the problem and do not provide any meaningful information. _Cabin_ data could potentially be mapped to locations on the ship and their subsequent chances of survival, but missing data meant it was not worth the additional complexity. The _PassengerId_ was also not considered during analysis, and simply remains to keep track of each passenger. 
 
@@ -32,7 +32,7 @@ Thirdly, any missing data (mostly in _Age_) was filled in with the mean of the a
 
 Finally, the data was normalized with the formula $$\frac{x-\mu}{\sigma}$$ Where $x$ is a data point, $/mu$ is the mean of the column, and $/sigma$ is the standard deviation of the column. This ensures that the data is relatively close to 0, preventing a single parameter from dominating the model. 
 
-These steps were implemented in Python using dataframe (pandas library). Once the data was processed and cleaned, it was written to another .csv file to be used.
+These steps were implemented in [Python](https://github.com/David-Ykz/Titanic-Python-Libraries) using dataframe (pandas library). Once the data was processed and cleaned, it was written to another .csv file to be used.
 
 
 ### Selecting A Model
@@ -107,7 +107,7 @@ Hyperparameters are just the various constants that the model uses, such as lear
 
 ### Comparisons
 
-Compared to other models, logistic regression is a relatively simple model, but still performs well compared to other models. Compared to the models from Scikit’s Library, this implementation is able to perform at a similar accuracy, with only a ~2% gap between the best model. Based on other’s experiences, there exists a threshold for these models at 77.751% accuracy. In order to achieve higher accuracy, a significantly more complex model is required, with extensive feature engineering and correlation tables. 
+Compared to other models, logistic regression is a relatively simple model, but still performs well compared to other models. When compared to the models from [Scikit’s Library](https://scikit-learn.org/stable/supervised_learning.html#supervised-learning), this implementation is able to perform at a similar accuracy, with only a ~2% gap between the best model. Based on others’ experiences, there exists a threshold for these models at 77.751% accuracy. In order to achieve higher accuracy, a significantly more complex model is required, with extensive feature engineering and correlation tables. 
 
 
 <table>
