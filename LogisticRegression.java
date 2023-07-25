@@ -17,7 +17,6 @@ public class LogisticRegression {
         weightGradients = initializeParameters(trainingData[0].length, 0);
         prevGradients = initializeParameters(trainingData[0].length, 0);
     }
-
     public static double dotProduct(double[] arr1, double[] arr2) {
         double result = 0;
         for (int i = 0; i < arr1.length; i++) {
@@ -25,6 +24,7 @@ public class LogisticRegression {
         }
         return result;
     }
+    // Fills an array with a specified value (if value is -1, it will fill it with random numbers from 0 to 1)
     public static double[] initializeParameters(int num, double fillValue) {
         double[] parameters = new double[num];
         if (fillValue >= 0) {
@@ -46,11 +46,9 @@ public class LogisticRegression {
     public static double logarithmicError(double y, double yHat) {
         return y * Math.log(yHat) + (1 - y) * Math.log(1 - yHat);
     }
-
     public double prediction(double[] data) {
         return sigmoid(dotProduct(weights, data) + bias);
     }
-
     public double logarithmicLoss() {
         double sum = 0;
         for (int i = 0; i < dataSet.length; i++) {
@@ -61,9 +59,8 @@ public class LogisticRegression {
         }
         return -1 / (double)dataSet.length * sum;
     }
-
-
-    public double learn(double delta, double learningRate, double momentum) {
+    // Applies gradient descent to help the model improve every time the method is called
+    public double learn(double learningRate, double momentum) {
         for (int j = 0; j < weights.length; j++) {
             double sum = 0;
             for (int i = 0; i < dataSet.length; i++) {
@@ -87,7 +84,7 @@ public class LogisticRegression {
         bias += learningRate * biasGradient;
         return bias;
     }
-
+    // Checks the accuracy of the model to see how many it correctly predicted
     public int testPredictions(double[][] testingData, int[] outputs) {
         int numCorrect = 0;
         for (int i = 0; i < testingData.length; i++) {
@@ -97,13 +94,5 @@ public class LogisticRegression {
             }
         }
         return numCorrect;
-    }
-
-    public double[] allPredictions(double[][] testinData) {
-        double[] predictions = new double[testinData.length];
-        for (int i = 0; i < testinData.length; i++) {
-            predictions[i] = prediction(testinData[i]);
-        }
-        return predictions;
     }
 }

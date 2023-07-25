@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.PrintWriter;
 
 public class CSVWriter {
-
+    // Writes predictions to a .csv file
     public static void writeFile(String fileName, int[] predictions) {
         try {
             File outputFile = new File(fileName);

@@ -1,18 +1,7 @@
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
-    public static int numberCorrect(double[] predictions, int[] results) {
-        int numCorrect = 0;
-        for (int i = 0; i < predictions.length; i++) {
-            if (Math.abs(predictions[i] - results[i]) < 0.5) {
-                numCorrect++;
-            }
-        }
-        return numCorrect;
-    }
-
+    // Splits training data for testing purposes
     public static double[][] splitData(double[][] data, int index) {
         if (index > 0) {
             return Arrays.copyOfRange(data, 0, index);
@@ -20,7 +9,7 @@ public class Main {
             return Arrays.copyOfRange(data, data.length + index, data.length);
         }
     }
-
+    // Splits the output data
     public static int[] splitResults(int[] results, int index) {
         if (index > 0) {
             return Arrays.copyOfRange(results, 0, index);
@@ -34,7 +23,11 @@ public class Main {
         double[][] trainingData = CSVReader.readFeatures("ScaledTrainingSet.csv");
         int[] results = CSVReader.readResults("ResultsSet.csv", trainingData.length);
 
-        boolean trainingMode = true;
+        /* Controls what mode the model is in
+         * If trainingMode = true, the program splits training data up to measure model performance
+         * If trainingMode = false, the program predicts the testing data for Kaggle submission
+         */
+        boolean trainingMode = false;
 
         if (trainingMode) {
             // Split data for training and testing
@@ -46,29 +39,30 @@ public class Main {
             int[] testResult = splitResults(results, -testingSize);
             LogisticRegression classifier = new LogisticRegression(train, trainResult);
             // Train model
-            for (int i = 0; i < 30000; i++) {
-                classifier.learn(0.001, 0.01, 0.7);
+            for (int i = 0; i < 70000; i++) {
+                classifier.learn(0.001, 0.9);
                 if (i % 1000 == 0) {
                     System.out.println("Train Accuracy: " + classifier.testPredictions(train, trainResult) / (double)trainingSize);
-                //    System.out.println("Test Accuracy: " + classifier.testPredictions(parameters, bias, test, testResult) / (double)testingSize);
                 }
             }
-            // Print output
-            System.out.println("Accuracy: " + classifier.testPredictions(test, testResult) / (double)testingSize);
+            System.out.println("Test Accuracy: " + classifier.testPredictions(test, testResult) / (double)testingSize);
         } else {
             LogisticRegression classifier = new LogisticRegression(trainingData, results);
-            for (int i = 0; i < 100000; i++) {
-                if (i % 5000 == 0) {
+            for (int i = 0; i < 70000; i++) {
+                if (i % 1000 == 0) {
                     System.out.println("Accuracy: " + classifier.testPredictions(trainingData, results) / (double)trainingData.length);
                 }
-//                bias = classifier.learn(parameters, bias, trainingData, results, 0.001, 0.001);
+                classifier.learn(0.001, 0.9);
             }
             System.out.println("Accuracy: " + classifier.testPredictions(trainingData, results) / (double)trainingData.length);
+            // Read testing data
             double[][] testData = CSVReader.readFeatures("ScaledTestingSet.csv");
             int[] testDataPredictions = new int[testData.length];
+            // Use the model to predict survival for testing data
             for (int i = 0; i < testData.length; i++) {
                 testDataPredictions[i] = (int) Math.round(classifier.prediction(testData[i]));
             }
+            // Write predictions to a .csv file
             CSVWriter.writeFile("Predictions.csv", testDataPredictions);
         }
     }

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CSVReader {
+    // Reads training or testing data
     public static double[][] readFeatures(String fileName) {
         ArrayList<double[]> data = new ArrayList<>();
         try {
@@ -18,7 +19,7 @@ public class CSVReader {
                 double parch = Double.parseDouble(line[5]);
                 double fare = Double.parseDouble(line[6]);
                 double embarked = Double.parseDouble(line[7]);
-                data.add(new double[] {pClass, gender, age, sibsp, parch, fare, embarked});
+                data.add(new double[] {pClass, gender, age});
             }
             input.close();
         } catch (Exception e) {
@@ -31,7 +32,7 @@ public class CSVReader {
         }
         return arr;
     }
-
+    // Reads the results for training data (whether a passenger survived or not)
     public static int[] readResults(String fileName, int numResults) {
         int[] arr = new int[numResults];
         try {
@@ -51,5 +52,4 @@ public class CSVReader {
         }
         return arr;
     }
-
 }
