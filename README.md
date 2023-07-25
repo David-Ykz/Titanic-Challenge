@@ -15,7 +15,7 @@
 
 ### Overview
 
-The Titanic Competition is a competition hosted by Kaggle, where participants are tasked with predicting the survival of a group of passengers. Participants are given a training dataset of around 900 passengers with features like age, gender, passenger class, and if they survived or not. They are then given a testing dataset of around 400 passengers, except without any information on their survival. Using patterns from the training data, the goal is to correctly predict the survival of as many passengers in the testing set. 
+The [Titanic Competition](https://www.kaggle.com/competitions/titanic/overview) is a competition hosted by Kaggle, where participants are tasked with predicting the survival of a group of passengers. Participants are given a training dataset of around 900 passengers with features like age, gender, passenger class, and if they survived or not. They are then given a testing dataset of around 400 passengers, except without any information on their survival. Using patterns from the training data, the goal is to correctly predict the survival of as many passengers in the testing set. 
 
 
 ### Data Cleaning And Processing
