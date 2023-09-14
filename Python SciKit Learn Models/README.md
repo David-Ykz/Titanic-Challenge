@@ -1,0 +1,5 @@
+# Data Processing Using Python
+
+Training and testing data was processed using python by importing both .csv files as a dataframe. From there, [dataframe.drop()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html) and [sklearn.scale()](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.scale.html) were used to clean up the data. Missing columns or categorical data was also fixed using [dataframe.fill()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html) and [dataframe.apply()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.apply.html). The resulting file was then written to .xlsx files and imported to Google Sheets for inspection, which they were then converted back to .csv and used as input data.
+
+The file main.py contains various different models from Scikit's libraries and their performance with the Titanic Competition. Each model will have a respective output .csv file that was used to determine the model's test accuracy and performance in the Titanic Competition. 
