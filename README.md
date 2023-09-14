@@ -32,7 +32,7 @@ Thirdly, any missing data (mostly in _Age_) was filled in with the mean of the a
 
 Finally, the data was normalized with the formula $$\frac{x-\mu}{\sigma}$$ Where $x$ is a data point, $\mu$ is the mean of the column, and $\sigma$ is the standard deviation of the column. This ensures that the data is relatively close to 0, preventing a single parameter from dominating the model. 
 
-These steps were implemented in [Python](https://github.com/David-Ykz/Titanic-Python-Libraries) using dataframe (pandas library). Once the data was processed and cleaned, it was written to another .csv file to be used.
+These steps were implemented in Python using dataframe (pandas library). Once the data was processed and cleaned, it was written to another .csv file to be used.
 
 
 ### Selecting A Model
